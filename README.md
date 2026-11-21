@@ -26,4 +26,4 @@ Construir um negócio sustentável com potencial de faturamento mensal de R$ 5.0
 
 🛠️ Desenvolvimento
 
-Projeto em construção.
+Projeto em construção. 
