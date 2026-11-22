@@ -1,4 +1,13 @@
-<!DOCTYPE html> <html lang="pt-br"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Meu Corre - Gestão para Entregadores</title> <style> body { font-family: Arial, sans-serif; background: #101827; color: white; margin: 0; padding: 20px; } h1 { color: #22c55e; text-align: center; } .card { background: #1e293b; padding: 20px; margin: 15px 0; border-radius: 12px; } .valor { font-size: 28px; color: #22c55e; font-weight: bold; } sections { margin-top: 30px; } section h2 { border-bottom: 2px solid #334155; padding-bottom: 10px; } </style> </head> <body> <header> <h1> MEU CORRE</h1> </header> <main> <div class="card"> <h2>Resumo do Dia</h2> <p>Ganhos de hoje:</p> <div class="valor">R$ 0,00</div> </div> </main> <section> <h2>Login</h2> <form> <label>Email:</label>
+<!DOCTYPE html> <html lang="pt-br"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Meu Corre - Gestão para Entregadores</title> <style> body { font-family: Arial, sans-serif; background: #101827; color: white; margin: 0; padding: 20px; } h1 { color: #22c55e; text-align: center; } .card { background: #1e293b; padding: 20px; margin: 15px 0; border-radius: 12px; } .valor { font-size: 28px; color: #22c55e; font-weight: bold; } sections { margin-top: 30px; } section h2 { border-bottom: 2px solid #334155; padding-bottom: 10px; } </style> </head> <body> <header> <h1> MEU CORRE</h1> </header> <main>
+<section>
+<h2>Registrar Ganhos</h2>
+<form>
+<label>Valor de hoje (R$):</label>
+<input type="number" step="0.01" placeholder="0.00" required>
+<button type="submit">Salvar Ganho</button>
+</form>
+</section>
+<div class="card"> <h2>Resumo do Dia</h2> <p>Ganhos de hoje:</p> <div class="valor">R$ 0,00</div> </div> </main> <section> <h2>Login</h2> <form> <label>Email:</label>
  <input type="email" required>
  <label>Senha:</label>
  <input type="password" required>
