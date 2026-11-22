@@ -71,18 +71,19 @@ DOCTYPE html>
 <h2>Histórico</h2><ul></ul></section>
 <section>
 <script>
-const ganho = document.getElementById'ganho'.value;
-const despesa = document.getElementById'despesa'.value;
-console.log('Saldo:', ganho - despesa);
+<script> e </script>:
+document.querySelector('form').addEventListener('submit', () => {
+    localStorage.setItem('ganho', document.getElementById('ganho').value);
+    localStorage.setItem('despesa', document.getElementById('despesa').value);
+});
 
-document.querySelector('form').addEventListener('submit', () => {
-    localStorage.setItem('ganho', document.getElementById('ganho').value);
-    localStorage.setItem('despesa', document.getElementById('despesa').value);
-});
-document.querySelector('form').addEventListener('submit', () => {
-    localStorage.setItem('ganho', document.getElementById('ganho').value);
-    localStorage.setItem('despesa', document.getElementById('despesa').value);
-});
+const ganhoSalvo = localStorage.getItem('ganho');
+const despesaSalva = localStorage.getItem('despesa');
+if (ganhoSalvo || despesaSalva) {
+    const li = document.createElement('li');
+    li.textContent = `Ganho: R$ ${ganhoSalvo || 0} | Despesa: R$ ${despesaSalva || 0}`;
+    document.querySelector('ul').appendChild(li);
+}
 </script>
 </body>
 </html>
