@@ -74,6 +74,11 @@ DOCTYPE html>
 const ganho = document.getElementById'ganho'.value;
 const despesa = document.getElementById'despesa'.value;
 console.log('Saldo:', ganho - despesa);
+
+document.querySelector('form').addEventListener('submit', () => {
+    localStorage.setItem('ganho', document.getElementById('ganho').value);
+    localStorage.setItem('despesa', document.getElementById('despesa').value);
+});
 </script>
 </body>
 </html>
