@@ -1,114 +1,69 @@
-
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Meu Corre - Gestão para Entregadores</title>
-
+<meta name="theme-color" content="#101827">
+<title>Meu Corre — Assistente</title>
 <style>
-* { box-sizing: border-box; }
-
-body {
-  font-family: Arial, sans-serif;
-  background: #101827;
-  color: white;
-  margin: 0;
-  padding: 16px;
-}
-
-h1 {
-  color: #22c55e;
-  text-align: center;
-}
-
-.card {
-  background: #1e293b;
-  padding: 18px;
-  margin: 15px 0;
-  border-radius: 12px;
-}
-
-.resumo {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.valor {
-  font-size: 22px;
-  font-weight: bold;
-  margin-top: 8px;
-  overflow-wrap: anywhere;
-}
-
-.verde { color: #22c55e; }
-.vermelho { color: #f87171; }
-
-label {
-  display: block;
-  margin: 12px 0 6px;
-}
-
-input, select {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #334155;
-  border-radius: 6px;
-  background: #0f172a;
-  color: white;
-  font-size: 16px;
-}
-
-button {
-  width: 100%;
-  padding: 13px;
-  margin-top: 15px;
-  background: #22c55e;
-  color: white;
-  border: none;
-  border-radius: 7px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.lancamento {
-  background: #0f172a;
-  padding: 12px;
-  margin-top: 10px;
-  border-radius: 8px;
-}
-
-.excluir {
-  background: #dc2626;
-  padding: 9px;
-}
-
-small { color: #94a3b8; }
-
-.destaque {
-  border: 1px solid #22c55e;
-}
-
+*{box-sizing:border-box}
+body{font-family:Arial,sans-serif;background:#101827;color:#fff;margin:0;padding:16px}
+header{text-align:center;padding:8px 0 14px}
+h1{color:#22c55e;margin:4px 0}
+p{line-height:1.45}
+.card{background:#1e293b;padding:18px;margin:14px 0;border-radius:14px}
+.destaque{border:1px solid #22c55e}
+.assistente{text-align:center;padding:22px 16px}
+.mic{width:104px;height:104px;border-radius:50%;border:0;background:#22c55e;color:#07130b;font-size:42px;margin:16px auto;display:block;cursor:pointer}
+.mic.ouvindo{background:#f87171;box-shadow:0 0 0 10px #f8717130;animation:pulse 1.2s infinite}
+@keyframes pulse{50%{transform:scale(1.06)}}
+.status{color:#86efac;font-weight:bold;min-height:24px}
+.resposta{background:#0f172a;border-radius:10px;padding:12px;min-height:54px;text-align:left}
+.resumo{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.valor{font-size:21px;font-weight:bold;margin-top:8px;overflow-wrap:anywhere}
+.verde{color:#22c55e}.vermelho{color:#f87171}
+label{display:block;margin:12px 0 6px}
+input,select{width:100%;padding:12px;border:1px solid #334155;border-radius:7px;background:#0f172a;color:white;font-size:16px}
+button.acao{width:100%;padding:13px;margin-top:12px;background:#22c55e;color:#07130b;border:0;border-radius:8px;font-weight:bold;font-size:15px}
+button.secundario{background:#334155;color:white}
+.lancamento{background:#0f172a;padding:12px;margin-top:10px;border-radius:8px}
+.excluir{background:#dc2626!important;color:white!important}
+small{color:#94a3b8}
+details summary{cursor:pointer;font-weight:bold;color:#86efac}
+.aviso{font-size:13px;color:#cbd5e1}
 </style>
 </head>
-
 <body>
-
 <header>
 <h1>💎 MEU CORRE</h1>
-<p style="text-align:center">
-Sua vida financeira na palma da mão
-</p>
+<p>Sua assistente para organizar o corre. Fale comigo, sem precisar digitar.</p>
 </header>
 
 <main>
+<section class="card destaque assistente">
+<h2>🎙️ Assistente do Meu Corre</h2>
+<p>Toque no microfone e diga o que você precisa.</p>
+<button class="mic" id="microfone" aria-label="Falar com Meu Corre">🎙️</button>
+<div class="status" id="status">Pronto para ouvir</div>
+<div class="resposta" id="resposta">Exemplo: “Ganhei 80 reais hoje” ou “Quanto gastei hoje?”</div>
+<p class="aviso" id="suporte"></p>
+<button class="acao secundario" id="falarNovamente">🔊 Ouvir resposta novamente</button>
+</section>
 
-<section class="card destaque">
-<h2>🚀 Meu veículo</h2>
+<section class="card">
+<h2>📊 Resumo de hoje</h2>
+<div class="resumo">
+<div><small>Ganhos</small><div class="valor verde" id="ganhos">R$ 0,00</div></div>
+<div><small>Despesas</small><div class="valor vermelho" id="despesas">R$ 0,00</div></div>
+</div>
+<hr style="border-color:#334155;margin:20px 0">
+<small>Saldo líquido do dia</small>
+<div class="valor verde" id="saldo">R$ 0,00</div>
+</section>
 
-<label>Selecione sua modalidade</label>
-
+<section class="card">
+<h2>🚲 Meu veículo</h2>
+<label for="veiculo">Modalidade</label>
 <select id="veiculo">
 <option value="bike">🚲 Bicicleta comum</option>
 <option value="bike-eletrica">⚡ Bicicleta elétrica</option>
@@ -119,444 +74,141 @@ Sua vida financeira na palma da mão
 <option value="suv">🚙 SUV</option>
 <option value="frete">📦 Frete / Outros</option>
 </select>
-
-<p><small id="mensagemVeiculo">
-Seu veículo será utilizado nos próximos lançamentos.
-</small></p>
+<small id="mensagemVeiculo"></small>
 </section>
 
 <section class="card">
-<h2>📊 Resumo de hoje</h2>
-
-<div class="resumo">
-<div>
-<small>Ganhos</small>
-<div class="valor verde" id="ganhos">R$ 0,00</div>
-</div>
-
-<div>
-<small>Despesas</small>
-<div class="valor vermelho" id="despesas">R$ 0,00</div>
-</div>
-</div>
-
-<hr style="border-color:#334155;margin:20px 0">
-
-<small>Saldo líquido do dia</small>
-<div class="valor verde" id="saldo">R$ 0,00</div>
-</section>
-
-<section class="card">
-<h2>💰 Novo lançamento</h2>
-
+<details>
+<summary>✍️ Abrir lançamento manual (opcional)</summary>
 <form id="formulario">
-
-<label>Tipo de lançamento</label>
-<select id="tipo" required>
-<option value="ganho">Ganho</option>
-<option value="despesa">Despesa</option>
-</select>
-
-<label>Descrição</label>
-<input id="descricao" type="text"
-placeholder="Ex: Entrega, alimentação"
-required>
-
-<label>Categoria da despesa</label>
-<select id="categoria">
-<option value="Entrega">Entrega / Serviço</option>
-</select>
-
-<label>Valor (R$)</label>
-<input id="valor" type="number"
-step="0.01" min="0.01"
-placeholder="0.00" required>
-
-<label>Data</label>
-<input id="data" type="date" required>
-
-<button type="submit">SALVAR LANÇAMENTO</button>
-
+<label for="tipo">Tipo</label>
+<select id="tipo"><option value="ganho">Ganho</option><option value="despesa">Despesa</option></select>
+<label for="descricao">Descrição</label>
+<input id="descricao" placeholder="Ex.: Entrega ou alimentação">
+<label for="categoria">Categoria</label>
+<select id="categoria"></select>
+<label for="valor">Valor (R$)</label>
+<input id="valor" type="number" step="0.01" min="0.01" placeholder="0,00">
+<label for="data">Data</label>
+<input id="data" type="date">
+<button class="acao" type="submit">Salvar lançamento</button>
 </form>
+</details>
 </section>
 
 <section class="card">
-<h2>📚 Histórico de lançamentos</h2>
-
-<div id="historico">
-<p>Nenhum lançamento registrado.</p>
-</div>
+<h2>📚 Histórico</h2>
+<div id="historico">Nenhum lançamento registrado.</div>
 </section>
-
-<section class="card">
-<h2>💡 Sobre o Meu Corre</h2>
-<p>Controle seus ganhos, despesas e resultados em um só lugar.</p>
-<p>Mais organização para quem vive de entregas!</p>
-<small>Meu Corre - Versão 2.0</small>
-</section>
-
 </main>
 
 <script>
-
-const chave = "meuCorreLancamentos";
-const chaveVeiculo = "meuCorreVeiculo";
-
-let lancamentos = [];
-
-try {
-  lancamentos = JSON.parse(
-    localStorage.getItem(chave) || "[]"
-  );
-
-  if (!Array.isArray(lancamentos)) {
-    lancamentos = [];
-  }
-} catch (erro) {
-  lancamentos = [];
-}
-
-const categorias = {
-  bike: [
-    "Alimentação",
-    "Manutenção",
-    "Pneu e câmara",
-    "Freios",
-    "Acessórios",
-    "Internet",
-    "Outros"
-  ],
-
-  "bike-eletrica": [
-    "Alimentação",
-    "Manutenção",
-    "Bateria",
-    "Recarga de energia",
-    "Pneus",
-    "Freios",
-    "Internet",
-    "Outros"
-  ],
-
-  moto: [
-    "Combustível",
-    "Alimentação",
-    "Óleo",
-    "Manutenção",
-    "Pneus",
-    "Freios",
-    "Documentação",
-    "Internet",
-    "Outros"
-  ],
-
-  "moto-eletrica": [
-    "Alimentação",
-    "Manutenção",
-    "Bateria",
-    "Recarga de energia",
-    "Pneus",
-    "Freios",
-    "Documentação",
-    "Internet",
-    "Outros"
-  ],
-
-  carro: [
-    "Combustível",
-    "Alimentação",
-    "Manutenção",
-    "Pneus",
-    "Estacionamento",
-    "Pedágio",
-    "Documentação",
-    "Seguro",
-    "Internet",
-    "Outros"
-  ],
-
-  van: [
-    "Combustível",
-    "Alimentação",
-    "Manutenção",
-    "Pneus",
-    "Estacionamento",
-    "Pedágio",
-    "Documentação",
-    "Seguro",
-    "Carga",
-    "Outros"
-  ],
-
-  suv: [
-    "Combustível",
-    "Alimentação",
-    "Manutenção",
-    "Pneus",
-    "Estacionamento",
-    "Pedágio",
-    "Documentação",
-    "Seguro",
-    "Outros"
-  ],
-
-  frete: [
-    "Combustível",
-    "Alimentação",
-    "Manutenção",
-    "Pneus",
-    "Pedágio",
-    "Estacionamento",
-    "Carga",
-    "Documentação",
-    "Outros"
-  ]
+const chave="meuCorreLancamentos", chaveVeiculo="meuCorreVeiculo";
+let lancamentos=[];
+try{const dados=JSON.parse(localStorage.getItem(chave)||"[]");lancamentos=Array.isArray(dados)?dados:[]}catch(e){lancamentos=[]}
+const categorias={
+bike:["Alimentação","Manutenção","Pneu e câmara","Freios","Acessórios","Internet","Outros"],
+"bike-eletrica":["Alimentação","Manutenção","Bateria","Recarga de energia","Pneus","Freios","Internet","Outros"],
+moto:["Combustível","Alimentação","Óleo","Manutenção","Pneus","Freios","Documentação","Internet","Outros"],
+"moto-eletrica":["Alimentação","Manutenção","Bateria","Recarga de energia","Pneus","Freios","Documentação","Internet","Outros"],
+carro:["Combustível","Alimentação","Manutenção","Pneus","Estacionamento","Pedágio","Documentação","Seguro","Internet","Outros"],
+van:["Combustível","Alimentação","Manutenção","Pneus","Estacionamento","Pedágio","Documentação","Seguro","Carga","Outros"],
+suv:["Combustível","Alimentação","Manutenção","Pneus","Estacionamento","Pedágio","Documentação","Seguro","Outros"],
+frete:["Combustível","Alimentação","Manutenção","Pneus","Pedágio","Estacionamento","Carga","Documentação","Outros"]
 };
-
-const nomesVeiculos = {
-  bike: "Bicicleta comum",
-  "bike-eletrica": "Bicicleta elétrica",
-  moto: "Moto",
-  "moto-eletrica": "Moto elétrica",
-  carro: "Carro",
-  van: "Van",
-  suv: "SUV",
-  frete: "Frete / Outros"
-};
-
-const elementoVeiculo =
-  document.getElementById("veiculo");
-
-try {
-  const salvo = localStorage.getItem(chaveVeiculo);
-
-  if (salvo && nomesVeiculos[salvo]) {
-    elementoVeiculo.value = salvo;
-  }
-} catch (erro) {}
-
-function atualizarCategorias() {
-  const categoria =
-    document.getElementById("categoria");
-
-  categoria.innerHTML = "";
-
-  categorias[elementoVeiculo.value].forEach(nome => {
-    const opcao = document.createElement("option");
-    opcao.value = nome;
-    opcao.textContent = nome;
-    categoria.appendChild(opcao);
-  });
-
-  document.getElementById("mensagemVeiculo")
-    .textContent =
-    "Modalidade selecionada: " +
-    nomesVeiculos[elementoVeiculo.value];
+const nomes={bike:"Bicicleta comum","bike-eletrica":"Bicicleta elétrica",moto:"Moto","moto-eletrica":"Moto elétrica",carro:"Carro",van:"Van",suv:"SUV",frete:"Frete / Outros"};
+const $=id=>document.getElementById(id);
+const veiculo=$("veiculo");
+try{const v=localStorage.getItem(chaveVeiculo);if(nomes[v])veiculo.value=v}catch(e){}
+function hoje(){const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-")}
+function moeda(v){return Number(v).toLocaleString("pt-BR",{style:"currency",currency:"BRL"})}
+function salvar(){try{localStorage.setItem(chave,JSON.stringify(lancamentos));localStorage.setItem(chaveVeiculo,veiculo.value)}catch(e){avisar("Não foi possível salvar neste navegador.")}}
+function categoriasAtualizar(){
+ $("categoria").innerHTML="";
+ (categorias[veiculo.value]||categorias.bike).forEach(n=>{const o=document.createElement("option");o.value=n;o.textContent=n;$("categoria").appendChild(o)});
+ $("mensagemVeiculo").textContent="Selecionado: "+nomes[veiculo.value];
 }
-
-elementoVeiculo.addEventListener("change", () => {
-  localStorage.setItem(
-    chaveVeiculo,
-    elementoVeiculo.value
-  );
-
-  atualizarCategorias();
+veiculo.addEventListener("change",()=>{salvar();categoriasAtualizar()});
+function atualizar(){
+ const dia=lancamentos.filter(x=>x.data===hoje());
+ const g=dia.filter(x=>x.tipo==="ganho").reduce((s,x)=>s+Number(x.valor),0);
+ const d=dia.filter(x=>x.tipo==="despesa").reduce((s,x)=>s+Number(x.valor),0);
+ $("ganhos").textContent=moeda(g);$("despesas").textContent=moeda(d);
+ $("saldo").textContent=moeda(g-d);$("saldo").className="valor "+(g-d>=0?"verde":"vermelho");
+ const h=$("historico");h.innerHTML="";
+ if(!lancamentos.length){h.textContent="Nenhum lançamento registrado.";return}
+ [...lancamentos].sort((a,b)=>b.data.localeCompare(a.data)).forEach(item=>{
+  const div=document.createElement("div");div.className="lancamento";
+  const t=document.createElement("strong");t.textContent=item.descricao;
+  const p=document.createElement("p");p.textContent=(item.tipo==="ganho"?"Ganho: ":"Despesa: ")+moeda(item.valor);
+  const s=document.createElement("small");s.textContent=(item.categoria?"Categoria: "+item.categoria+" • ":"")+"Veículo: "+(nomes[item.veiculo]||"Não informado")+" • "+item.data.split("-").reverse().join("/");
+  const b=document.createElement("button");b.className="acao excluir";b.textContent="Excluir";
+  b.onclick=()=>{if(confirm("Excluir este lançamento?")){lancamentos=lancamentos.filter(x=>x.id!==item.id);salvar();atualizar()}};
+  div.append(t,p,s,b);h.appendChild(div);
+ });
+}
+function registrar(tipo,descricao,valor,categoria="",data=hoje()){
+ if(!Number.isFinite(valor)||valor<=0){avisar("Não entendi o valor. Tente falar, por exemplo: ganhei 50 reais.");return false}
+ lancamentos.push({id:Date.now().toString()+Math.random().toString(16).slice(2),tipo,descricao,valor,data,categoria,veiculo:veiculo.value});
+ salvar();atualizar();return true;
+}
+$("data").value=hoje();categoriasAtualizar();atualizar();$("categoria").disabled=true;
+$("tipo").addEventListener("change",()=>{$("categoria").disabled=$("tipo").value==="ganho"});
+$("formulario").addEventListener("submit",e=>{
+ e.preventDefault();const tipo=$("tipo").value,desc=$("descricao").value.trim(),valor=Number($("valor").value),data=$("data").value;
+ if(!desc||!data||!registrar(tipo,desc,valor,tipo==="despesa"?$("categoria").value:"",data))return;
+ e.target.reset();$("data").value=hoje();$("tipo").value="ganho";$("categoria").disabled=true;falar("Lançamento salvo com sucesso.");
 });
 
-document.getElementById("tipo")
-.addEventListener("change", function() {
-  const campo = document.getElementById("categoria");
-  campo.disabled = this.value === "ganho";
+let ultimaResposta="";
+function falar(texto){
+ ultimaResposta=texto;$("resposta").textContent=texto;
+ if("speechSynthesis" in window){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(texto);u.lang="pt-BR";u.rate=1; speechSynthesis.speak(u)}
+}
+function avisar(texto){$("status").textContent=texto;$("resposta").textContent=texto}
+function interpretar(frase){
+ const s=frase.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(",",".");
+ const numeros={"um":1,"uma":1,"dois":2,"duas":2,"tres":3,"quatro":4,"cinco":5,"dez":10,"vinte":20,"trinta":30,"quarenta":40,"cinquenta":50,"sessenta":60,"setenta":70,"oitenta":80,"noventa":90,"cem":100};
+ let m=s.match(/(\d+(?:\.\d{1,2})?)/);
+ let valor=m?Number(m[1]):null;
+ if(valor===null){for(const [palavra,n] of Object.entries(numeros)){if(new RegExp("\\b"+palavra+"\\b").test(s)){valor=n;break}}}
+ if(/quanto (eu )?(ganhei|recebi)|meus ganhos/.test(s)){
+  const g=lancamentos.filter(x=>x.data===hoje()&&x.tipo==="ganho").reduce((a,x)=>a+Number(x.valor),0);falar("Hoje você ganhou "+moeda(g)+".");return
+ }
+ if(/quanto (eu )?gastei|minhas despesas/.test(s)){
+  const d=lancamentos.filter(x=>x.data===hoje()&&x.tipo==="despesa").reduce((a,x)=>a+Number(x.valor),0);falar("Hoje você gastou "+moeda(d)+".");return
+ }
+ if(/saldo|resultado de hoje|lucro de hoje/.test(s)){
+  const dia=lancamentos.filter(x=>x.data===hoje());const g=dia.filter(x=>x.tipo==="ganho").reduce((a,x)=>a+Number(x.valor),0);const d=dia.filter(x=>x.tipo==="despesa").reduce((a,x)=>a+Number(x.valor),0);falar("Seu saldo líquido de hoje é "+moeda(g-d)+".");return
+ }
+ if(/qual (e|é) meu veiculo|meu veiculo/.test(s)){falar("Seu veículo selecionado é "+nomes[veiculo.value]+".");return}
+ if(/ganhei|recebi|entrada/.test(s)&&valor!==null){
+  if(registrar("ganho","Ganho informado por voz",valor)){falar("Registrei um ganho de "+moeda(valor)+".");}return
+ }
+ if(/gastei|despesa|paguei|comprei/.test(s)&&valor!==null){
+  let cat="Outros";for(const c of categorias[veiculo.value])if(s.includes(c.toLowerCase())){cat=c;break}
+  if(/combustivel|gasolina/.test(s))cat="Combustível";
+  else if(/alimentacao|comida|almoco|lanche/.test(s))cat="Alimentação";
+  else if(/bateria|recarga|energia/.test(s))cat=veiculo.value.includes("eletrica")?"Recarga de energia":"Manutenção";
+  if(registrar("despesa","Despesa informada por voz",valor,cat)){falar("Registrei uma despesa de "+moeda(valor)+" em "+cat+".");}return
+ }
+ falar("Ainda não entendi esse comando. Você pode dizer: ganhei 80 reais, gastei 20 reais com alimentação, quanto ganhei hoje ou qual é meu saldo.");
+}
+const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;
+let reconhecimento=null;
+if(SpeechRecognition){
+ reconhecimento=new SpeechRecognition();reconhecimento.lang="pt-BR";reconhecimento.continuous=false;reconhecimento.interimResults=false;
+ reconhecimento.onstart=()=>{$("microfone").classList.add("ouvindo");$("status").textContent="Estou ouvindo... pode falar"};
+ reconhecimento.onresult=e=>{const frase=e.results[0][0].transcript;$("status").textContent="Você disse: "+frase;interpretar(frase)};
+ reconhecimento.onerror=e=>{avisar(e.error==="not-allowed"?"Permita o acesso ao microfone nas configurações do navegador.":"Não consegui ouvir. Toque no microfone e tente novamente.")};
+ reconhecimento.onend=()=>{$("microfone").classList.remove("ouvindo");if($("status").textContent==="Estou ouvindo... pode falar")$("status").textContent="Pronto para ouvir"};
+ $("suporte").textContent="O reconhecimento de voz depende do navegador e da permissão do microfone.";
+}else{$("suporte").textContent="Seu navegador não oferece reconhecimento de voz. Abra este app no Chrome atualizado e permita o microfone."}
+$("microfone").addEventListener("click",()=>{
+ if(!reconhecimento){falar("O reconhecimento de voz não está disponível neste navegador. Tente abrir no Chrome atualizado.");return}
+ try{reconhecimento.start()}catch(e){avisar("Aguarde um instante e toque novamente.")}
 });
-
-const hoje = () => {
-  const d = new Date();
-
-  return [
-    d.getFullYear(),
-    String(d.getMonth() + 1).padStart(2, "0"),
-    String(d.getDate()).padStart(2, "0")
-  ].join("-");
-};
-
-document.getElementById("data").value = hoje();
-
-function moeda(valor) {
-  return Number(valor).toLocaleString("pt-BR", {
-    style: "currency",
-    currency: "BRL"
-  });
-}
-
-function salvarDados() {
-  localStorage.setItem(
-    chave,
-    JSON.stringify(lancamentos)
-  );
-}
-
-function atualizar() {
-
-  const dataAtual = hoje();
-
-  const doDia = lancamentos.filter(
-    item => item.data === dataAtual
-  );
-
-  const ganhos = doDia
-    .filter(item => item.tipo === "ganho")
-    .reduce((total, item) => total + Number(item.valor), 0);
-
-  const despesas = doDia
-    .filter(item => item.tipo === "despesa")
-    .reduce((total, item) => total + Number(item.valor), 0);
-
-  document.getElementById("ganhos").textContent =
-    moeda(ganhos);
-
-  document.getElementById("despesas").textContent =
-    moeda(despesas);
-
-  const saldo = ganhos - despesas;
-
-  const elementoSaldo =
-    document.getElementById("saldo");
-
-  elementoSaldo.textContent = moeda(saldo);
-
-  elementoSaldo.className =
-    "valor " + (saldo >= 0 ? "verde" : "vermelho");
-
-  const historico =
-    document.getElementById("historico");
-
-  historico.innerHTML = "";
-
-  if (lancamentos.length === 0) {
-    historico.textContent =
-      "Nenhum lançamento registrado.";
-    return;
-  }
-
-  [...lancamentos]
-    .sort((a, b) => b.data.localeCompare(a.data))
-    .forEach(item => {
-
-      const div = document.createElement("div");
-      div.className = "lancamento";
-
-      const titulo = document.createElement("strong");
-      titulo.textContent = item.descricao;
-
-      const detalhe = document.createElement("p");
-
-      detalhe.textContent =
-        (item.tipo === "ganho" ? "Ganho: " : "Despesa: ") +
-        moeda(item.valor);
-
-      const veiculo = document.createElement("small");
-
-      veiculo.textContent =
-        "Veículo: " +
-        (nomesVeiculos[item.veiculo] || "Não informado");
-
-      const categoria = document.createElement("p");
-
-      categoria.textContent =
-        item.categoria ? "Categoria: " + item.categoria : "";
-
-      const data = document.createElement("small");
-
-      data.textContent =
-        item.data.split("-").reverse().join("/");
-
-      const excluir = document.createElement("button");
-      excluir.className = "excluir";
-      excluir.textContent = "Excluir lançamento";
-
-      excluir.onclick = () => {
-        if (confirm("Deseja excluir este lançamento?")) {
-          lancamentos = lancamentos.filter(
-            registro => registro.id !== item.id
-          );
-
-          salvarDados();
-          atualizar();
-        }
-      };
-
-      div.append(
-        titulo,
-        detalhe,
-        categoria,
-        veiculo,
-        document.createElement("br"),
-        data,
-        excluir
-      );
-
-      historico.appendChild(div);
-    });
-}
-
-document.getElementById("formulario")
-.addEventListener("submit", function(event) {
-
-  event.preventDefault();
-
-  const tipo = document.getElementById("tipo").value;
-
-  const descricao =
-    document.getElementById("descricao").value.trim();
-
-  const valor =
-    Number(document.getElementById("valor").value);
-
-  const data =
-    document.getElementById("data").value;
-
-  const categoria =
-    tipo === "despesa"
-      ? document.getElementById("categoria").value
-      : "";
-
-  if (!descricao || !Number.isFinite(valor) ||
-      valor <= 0 || !data) {
-    alert("Confira os dados do lançamento.");
-    return;
-  }
-
-  lancamentos.push({
-    id: Date.now().toString(),
-    tipo,
-    descricao,
-    valor,
-    data,
-    categoria,
-    veiculo: elementoVeiculo.value
-  });
-
-  salvarDados();
-  atualizar();
-
-  this.reset();
-
-  document.getElementById("data").value = hoje();
-  document.getElementById("tipo").value = "ganho";
-
-  atualizarCategorias();
-
-  document.getElementById("categoria").disabled = true;
-
-  alert("Lançamento salvo com sucesso!");
-});
-
-atualizarCategorias();
-atualizar();
-
-document.getElementById("categoria").disabled = true;
-
+$("falarNovamente").addEventListener("click",()=>{if(ultimaResposta)falar(ultimaResposta)});
 </script>
-
 </body>
 </html>
