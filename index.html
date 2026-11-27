@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -15,7 +14,7 @@ body {
   background: #101827;
   color: white;
   margin: 0;
-  padding: 20px;
+  padding: 16px;
 }
 
 h1 {
@@ -25,7 +24,7 @@ h1 {
 
 .card {
   background: #1e293b;
-  padding: 20px;
+  padding: 18px;
   margin: 15px 0;
   border-radius: 12px;
 }
@@ -40,12 +39,11 @@ h1 {
   font-size: 22px;
   font-weight: bold;
   margin-top: 8px;
+  overflow-wrap: anywhere;
 }
 
 .verde { color: #22c55e; }
 .vermelho { color: #f87171; }
-
-section { margin-top: 25px; }
 
 label {
   display: block;
@@ -59,16 +57,17 @@ input, select {
   border-radius: 6px;
   background: #0f172a;
   color: white;
+  font-size: 16px;
 }
 
 button {
   width: 100%;
-  padding: 12px;
+  padding: 13px;
   margin-top: 15px;
   background: #22c55e;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 7px;
   font-weight: bold;
   cursor: pointer;
 }
@@ -82,24 +81,52 @@ button {
 
 .excluir {
   background: #dc2626;
-  padding: 8px;
+  padding: 9px;
 }
 
 small { color: #94a3b8; }
+
+.destaque {
+  border: 1px solid #22c55e;
+}
+
 </style>
 </head>
 
 <body>
 
 <header>
-<h1>MEU CORRE</h1>
-<p style="text-align:center">Sua vida financeira na palma da mão</p>
+<h1>💎 MEU CORRE</h1>
+<p style="text-align:center">
+Sua vida financeira na palma da mão
+</p>
 </header>
 
 <main>
 
-<div class="card">
-<h2>Resumo de hoje</h2>
+<section class="card destaque">
+<h2>🚀 Meu veículo</h2>
+
+<label>Selecione sua modalidade</label>
+
+<select id="veiculo">
+<option value="bike">🚲 Bicicleta comum</option>
+<option value="bike-eletrica">⚡ Bicicleta elétrica</option>
+<option value="moto">🏍️ Moto</option>
+<option value="moto-eletrica">⚡ Moto elétrica</option>
+<option value="carro">🚗 Carro</option>
+<option value="van">🚐 Van</option>
+<option value="suv">🚙 SUV</option>
+<option value="frete">📦 Frete / Outros</option>
+</select>
+
+<p><small id="mensagemVeiculo">
+Seu veículo será utilizado nos próximos lançamentos.
+</small></p>
+</section>
+
+<section class="card">
+<h2>📊 Resumo de hoje</h2>
 
 <div class="resumo">
 <div>
@@ -117,10 +144,10 @@ small { color: #94a3b8; }
 
 <small>Saldo líquido do dia</small>
 <div class="valor verde" id="saldo">R$ 0,00</div>
-</div>
+</section>
 
 <section class="card">
-<h2>Novo lançamento</h2>
+<h2>💰 Novo lançamento</h2>
 
 <form id="formulario">
 
@@ -132,13 +159,18 @@ small { color: #94a3b8; }
 
 <label>Descrição</label>
 <input id="descricao" type="text"
-placeholder="Ex: Entrega, alimentação, manutenção"
+placeholder="Ex: Entrega, alimentação"
 required>
+
+<label>Categoria da despesa</label>
+<select id="categoria">
+<option value="Entrega">Entrega / Serviço</option>
+</select>
 
 <label>Valor (R$)</label>
 <input id="valor" type="number"
 step="0.01" min="0.01"
-placeholder="0,00" required>
+placeholder="0.00" required>
 
 <label>Data</label>
 <input id="data" type="date" required>
@@ -149,23 +181,197 @@ placeholder="0,00" required>
 </section>
 
 <section class="card">
-<h2>Histórico de lançamentos</h2>
+<h2>📚 Histórico de lançamentos</h2>
+
 <div id="historico">
 <p>Nenhum lançamento registrado.</p>
 </div>
 </section>
 
+<section class="card">
+<h2>💡 Sobre o Meu Corre</h2>
+<p>Controle seus ganhos, despesas e resultados em um só lugar.</p>
+<p>Mais organização para quem vive de entregas!</p>
+<small>Meu Corre - Versão 2.0</small>
+</section>
+
 </main>
 
 <script>
-const chave = "meuCorreLancamentos";
 
-let lancamentos = JSON.parse(
-  localStorage.getItem(chave) || "[]"
-);
+const chave = "meuCorreLancamentos";
+const chaveVeiculo = "meuCorreVeiculo";
+
+let lancamentos = [];
+
+try {
+  lancamentos = JSON.parse(
+    localStorage.getItem(chave) || "[]"
+  );
+
+  if (!Array.isArray(lancamentos)) {
+    lancamentos = [];
+  }
+} catch (erro) {
+  lancamentos = [];
+}
+
+const categorias = {
+  bike: [
+    "Alimentação",
+    "Manutenção",
+    "Pneu e câmara",
+    "Freios",
+    "Acessórios",
+    "Internet",
+    "Outros"
+  ],
+
+  "bike-eletrica": [
+    "Alimentação",
+    "Manutenção",
+    "Bateria",
+    "Recarga de energia",
+    "Pneus",
+    "Freios",
+    "Internet",
+    "Outros"
+  ],
+
+  moto: [
+    "Combustível",
+    "Alimentação",
+    "Óleo",
+    "Manutenção",
+    "Pneus",
+    "Freios",
+    "Documentação",
+    "Internet",
+    "Outros"
+  ],
+
+  "moto-eletrica": [
+    "Alimentação",
+    "Manutenção",
+    "Bateria",
+    "Recarga de energia",
+    "Pneus",
+    "Freios",
+    "Documentação",
+    "Internet",
+    "Outros"
+  ],
+
+  carro: [
+    "Combustível",
+    "Alimentação",
+    "Manutenção",
+    "Pneus",
+    "Estacionamento",
+    "Pedágio",
+    "Documentação",
+    "Seguro",
+    "Internet",
+    "Outros"
+  ],
+
+  van: [
+    "Combustível",
+    "Alimentação",
+    "Manutenção",
+    "Pneus",
+    "Estacionamento",
+    "Pedágio",
+    "Documentação",
+    "Seguro",
+    "Carga",
+    "Outros"
+  ],
+
+  suv: [
+    "Combustível",
+    "Alimentação",
+    "Manutenção",
+    "Pneus",
+    "Estacionamento",
+    "Pedágio",
+    "Documentação",
+    "Seguro",
+    "Outros"
+  ],
+
+  frete: [
+    "Combustível",
+    "Alimentação",
+    "Manutenção",
+    "Pneus",
+    "Pedágio",
+    "Estacionamento",
+    "Carga",
+    "Documentação",
+    "Outros"
+  ]
+};
+
+const nomesVeiculos = {
+  bike: "Bicicleta comum",
+  "bike-eletrica": "Bicicleta elétrica",
+  moto: "Moto",
+  "moto-eletrica": "Moto elétrica",
+  carro: "Carro",
+  van: "Van",
+  suv: "SUV",
+  frete: "Frete / Outros"
+};
+
+const elementoVeiculo =
+  document.getElementById("veiculo");
+
+try {
+  const salvo = localStorage.getItem(chaveVeiculo);
+
+  if (salvo && nomesVeiculos[salvo]) {
+    elementoVeiculo.value = salvo;
+  }
+} catch (erro) {}
+
+function atualizarCategorias() {
+  const categoria =
+    document.getElementById("categoria");
+
+  categoria.innerHTML = "";
+
+  categorias[elementoVeiculo.value].forEach(nome => {
+    const opcao = document.createElement("option");
+    opcao.value = nome;
+    opcao.textContent = nome;
+    categoria.appendChild(opcao);
+  });
+
+  document.getElementById("mensagemVeiculo")
+    .textContent =
+    "Modalidade selecionada: " +
+    nomesVeiculos[elementoVeiculo.value];
+}
+
+elementoVeiculo.addEventListener("change", () => {
+  localStorage.setItem(
+    chaveVeiculo,
+    elementoVeiculo.value
+  );
+
+  atualizarCategorias();
+});
+
+document.getElementById("tipo")
+.addEventListener("change", function() {
+  const campo = document.getElementById("categoria");
+  campo.disabled = this.value === "ganho";
+});
 
 const hoje = () => {
   const d = new Date();
+
   return [
     d.getFullYear(),
     String(d.getMonth() + 1).padStart(2, "0"),
@@ -183,10 +389,14 @@ function moeda(valor) {
 }
 
 function salvarDados() {
-  localStorage.setItem(chave, JSON.stringify(lancamentos));
+  localStorage.setItem(
+    chave,
+    JSON.stringify(lancamentos)
+  );
 }
 
 function atualizar() {
+
   const dataAtual = hoje();
 
   const doDia = lancamentos.filter(
@@ -195,34 +405,43 @@ function atualizar() {
 
   const ganhos = doDia
     .filter(item => item.tipo === "ganho")
-    .reduce((total, item) => total + item.valor, 0);
+    .reduce((total, item) => total + Number(item.valor), 0);
 
   const despesas = doDia
     .filter(item => item.tipo === "despesa")
-    .reduce((total, item) => total + item.valor, 0);
+    .reduce((total, item) => total + Number(item.valor), 0);
 
-  document.getElementById("ganhos").textContent = moeda(ganhos);
-  document.getElementById("despesas").textContent = moeda(despesas);
+  document.getElementById("ganhos").textContent =
+    moeda(ganhos);
+
+  document.getElementById("despesas").textContent =
+    moeda(despesas);
 
   const saldo = ganhos - despesas;
-  const elementoSaldo = document.getElementById("saldo");
+
+  const elementoSaldo =
+    document.getElementById("saldo");
 
   elementoSaldo.textContent = moeda(saldo);
-  elementoSaldo.className = "valor " +
-    (saldo >= 0 ? "verde" : "vermelho");
 
-  const historico = document.getElementById("historico");
+  elementoSaldo.className =
+    "valor " + (saldo >= 0 ? "verde" : "vermelho");
+
+  const historico =
+    document.getElementById("historico");
 
   historico.innerHTML = "";
 
   if (lancamentos.length === 0) {
-    historico.textContent = "Nenhum lançamento registrado.";
+    historico.textContent =
+      "Nenhum lançamento registrado.";
     return;
   }
 
   [...lancamentos]
     .sort((a, b) => b.data.localeCompare(a.data))
     .forEach(item => {
+
       const div = document.createElement("div");
       div.className = "lancamento";
 
@@ -230,12 +449,26 @@ function atualizar() {
       titulo.textContent = item.descricao;
 
       const detalhe = document.createElement("p");
+
       detalhe.textContent =
         (item.tipo === "ganho" ? "Ganho: " : "Despesa: ") +
         moeda(item.valor);
 
+      const veiculo = document.createElement("small");
+
+      veiculo.textContent =
+        "Veículo: " +
+        (nomesVeiculos[item.veiculo] || "Não informado");
+
+      const categoria = document.createElement("p");
+
+      categoria.textContent =
+        item.categoria ? "Categoria: " + item.categoria : "";
+
       const data = document.createElement("small");
-      data.textContent = item.data.split("-").reverse().join("/");
+
+      data.textContent =
+        item.data.split("-").reverse().join("/");
 
       const excluir = document.createElement("button");
       excluir.className = "excluir";
@@ -246,26 +479,49 @@ function atualizar() {
           lancamentos = lancamentos.filter(
             registro => registro.id !== item.id
           );
+
           salvarDados();
           atualizar();
         }
       };
 
-      div.append(titulo, detalhe, data, excluir);
+      div.append(
+        titulo,
+        detalhe,
+        categoria,
+        veiculo,
+        document.createElement("br"),
+        data,
+        excluir
+      );
+
       historico.appendChild(div);
     });
 }
 
 document.getElementById("formulario")
 .addEventListener("submit", function(event) {
+
   event.preventDefault();
 
   const tipo = document.getElementById("tipo").value;
-  const descricao = document.getElementById("descricao").value.trim();
-  const valor = Number(document.getElementById("valor").value);
-  const data = document.getElementById("data").value;
 
-  if (!descricao || valor <= 0 || !data) {
+  const descricao =
+    document.getElementById("descricao").value.trim();
+
+  const valor =
+    Number(document.getElementById("valor").value);
+
+  const data =
+    document.getElementById("data").value;
+
+  const categoria =
+    tipo === "despesa"
+      ? document.getElementById("categoria").value
+      : "";
+
+  if (!descricao || !Number.isFinite(valor) ||
+      valor <= 0 || !data) {
     alert("Confira os dados do lançamento.");
     return;
   }
@@ -275,19 +531,31 @@ document.getElementById("formulario")
     tipo,
     descricao,
     valor,
-    data
+    data,
+    categoria,
+    veiculo: elementoVeiculo.value
   });
 
   salvarDados();
   atualizar();
 
   this.reset();
+
   document.getElementById("data").value = hoje();
+  document.getElementById("tipo").value = "ganho";
+
+  atualizarCategorias();
+
+  document.getElementById("categoria").disabled = true;
 
   alert("Lançamento salvo com sucesso!");
 });
 
+atualizarCategorias();
 atualizar();
+
+document.getElementById("categoria").disabled = true;
+
 </script>
 
 </body>
