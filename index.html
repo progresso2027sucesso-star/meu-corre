@@ -10,72 +10,125 @@
 <style>
 :root{
  --gold:#f5c542;
- --gold2:#b88919;
  --bg:#101010;
  --card:#1d1d1d;
- --text:#fff;
  --muted:#aaa;
+ --green:#42d695;
+ --red:#ff6868;
 }
 *{box-sizing:border-box}
 body{
- margin:0;background:var(--bg);color:var(--text);
+ margin:0;background:var(--bg);color:white;
  font-family:Arial,sans-serif;
-}
-header{
- padding:16px;display:flex;justify-content:space-between;
- align-items:center;border-bottom:1px solid #383020;
- position:sticky;top:0;background:#101010;z-index:5;
-}
-.logo{font-size:22px;font-weight:bold;color:var(--gold)}
-main{max-width:650px;margin:auto;padding:13px}
-.card{
- background:var(--card);border:1px solid #40351d;
- border-radius:17px;padding:16px;margin-bottom:13px;
-}
-.gold{color:var(--gold)}
-.muted{color:var(--muted);font-size:12px}
-.assistant{text-align:center;padding:22px 15px}
-.orb{
- width:105px;height:105px;border-radius:50%;
- margin:5px auto 18px;
- display:grid;place-items:center;font-size:42px;color:#222;
- background:linear-gradient(135deg,#fff7bd,#f5c542,#986500);
- box-shadow:0 0 28px #f5c54266;
-}
-.orb.active{animation:pulse 2s infinite}
-@keyframes pulse{
- 50%{box-shadow:0 0 48px #f5c542}
+ min-height:100vh;
 }
 button,input,select{
- border:0;border-radius:10px;padding:13px;font-size:15px;
+ font:inherit;border:0;border-radius:12px;
+ padding:13px;
 }
 button{
  background:var(--gold);color:#171717;
  font-weight:bold;cursor:pointer;
 }
-button.secondary{background:#343434;color:white}
-button.danger{background:#572b2b;color:white}
-.full{width:100%;margin-top:8px}
+button:active{transform:scale(.98)}
 input,select{
- background:#303030;color:white;width:100%;margin:6px 0;
+ background:#303030;color:white;width:100%;
+ margin:6px 0;
 }
-nav{
+header{
+ padding:15px;display:flex;justify-content:space-between;
+ align-items:center;border-bottom:1px solid #40351d;
+}
+.logo{font-size:21px;font-weight:bold;color:var(--gold)}
+main{max-width:600px;margin:auto;padding:13px}
+.card{
+ background:var(--card);border:1px solid #40351d;
+ border-radius:18px;padding:16px;margin-bottom:12px;
+}
+.gold{color:var(--gold)}
+.green{color:var(--green)}
+.red{color:var(--red)}
+.muted{color:var(--muted);font-size:12px}
+.small{font-size:11px;color:var(--muted)}
+.value{font-size:25px;font-weight:bold}
+.full{width:100%;margin-top:8px}
+.secondary{background:#343434;color:white}
+.danger{background:#632d2d;color:white}
+.assistant{text-align:center;padding:22px 15px}
+.orb{
+ width:112px;height:112px;border-radius:50%;
+ display:grid;place-items:center;margin:10px auto 17px;
+ font-size:46px;color:#332600;
+ background:linear-gradient(135deg,#fff9ce,#f5c542,#936000);
+ box-shadow:0 0 35px #f5c54266;
+}
+.orb.active{animation:pulse 2s infinite}
+@keyframes pulse{
+ 50%{box-shadow:0 0 55px #f5c542}
+}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.progress{
+ height:9px;background:#333;border-radius:20px;
+ overflow:hidden;margin-top:10px;
+}
+.progress div{height:100%;background:var(--gold);width:0}
+.quick{
  display:grid;grid-template-columns:repeat(4,1fr);
- gap:7px;margin:12px 0;
+ gap:8px;margin:12px 0;
 }
-nav button{font-size:12px;padding:12px 3px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.value{font-size:23px;font-weight:bold}
-.item{padding:11px 0;border-bottom:1px solid #383838}
+.quick button{
+ background:#252525;color:white;
+ border:1px solid #40351d;
+ padding:12px 3px;font-size:11px;
+ min-height:65px;
+}
+.quick button span{display:block;font-size:21px;margin-bottom:5px}
+#resposta{
+ background:#28251c;border:1px solid #54451f;
+ padding:12px;border-radius:12px;
+ color:var(--gold);font-size:13px;
+ margin-top:12px;min-height:40px;
+ text-align:left;
+}
+#painel{
+ display:none;position:fixed;inset:0;z-index:20;
+ background:#000b;align-items:flex-end;
+}
+#painel.aberto{display:flex}
+.modal{
+ width:100%;max-width:600px;margin:auto;
+ max-height:88vh;overflow-y:auto;
+ background:#181818;border:1px solid #57451c;
+ border-radius:22px 22px 0 0;
+ padding:18px;
+ animation:subir .2s ease;
+}
+@keyframes subir{
+ from{transform:translateY(50px);opacity:0}
+ to{transform:translateY(0);opacity:1}
+}
+.modalHead{
+ display:flex;justify-content:space-between;
+ align-items:center;margin-bottom:16px;
+}
+.fechar{
+ background:#343434;color:white;
+ padding:9px 14px;
+}
+.item{
+ padding:12px 0;border-bottom:1px solid #383838;
+ font-size:13px;display:flex;
+ justify-content:space-between;gap:10px;
+ align-items:center;
+}
 .item:last-child{border:0}
-section[hidden]{display:none}
-h2,h3{margin-top:0}
+.item button{padding:8px;font-size:11px}
 .badge{
  display:inline-block;border:1px solid var(--gold);
- border-radius:20px;padding:5px 10px;
- font-size:11px;color:var(--gold);
+ color:var(--gold);padding:5px 9px;
+ border-radius:20px;font-size:10px;
 }
-footer{text-align:center;padding:20px;color:#777;font-size:11px}
+footer{text-align:center;color:#666;padding:20px;font-size:11px}
 </style>
 </head>
 
@@ -88,330 +141,222 @@ footer{text-align:center;padding:20px;color:#777;font-size:11px}
 
 <main>
 
-<!-- ASSISTENTE -->
+<!-- ÚNICA TELA PRINCIPAL -->
 <section class="card assistant">
- <div class="orb active" id="orb">✦</div>
- <h2>Olá, eu sou a <span class="gold">SALVE</span></h2>
- <p id="saudacao">Sua parceira no corre!</p>
- <p id="status" class="gold">Preparando minha escuta...</p>
 
- <button class="full" id="microfone" onclick="ativarMicrofone()">
- 🎙️ LIBERAR MICROFONE
+ <div class="orb" id="orb">✦</div>
+
+ <h2>Olá, eu sou a <span class="gold" id="nomeTitulo">SALVE</span></h2>
+
+ <p id="saudacao" class="muted">Sua parceira no corre!</p>
+
+ <p id="status" class="gold">Estou pronta para ajudar.</p>
+
+ <button class="full" id="btnVoz" onclick="ativarVoz()">
+ 🎙️ CONVERSAR COM A SALVE
  </button>
 
  <button class="full secondary" onclick="alternarSilencio()">
- 🔇 MODO SILENCIOSO / REATIVAR
+ 🔇 ATIVAR / DESATIVAR VOZ
  </button>
 
- <input id="comando" placeholder="Digite ou fale comigo...">
- <button class="full" onclick="enviarDigitado()">ENVIAR COMANDO</button>
-</section>
+ <input id="comando" placeholder="Digite o que você precisa...">
 
-<nav>
- <button onclick="mostrar('inicio')">🏠 Início</button>
- <button onclick="mostrar('financeiro')">💰 Finanças</button>
- <button onclick="mostrar('veiculos')">🏍️ Veículos</button>
- <button onclick="mostrar('config')">⚙️ Ajustes</button>
-</nav>
+ <button class="full" onclick="enviarComando()">ENVIAR COMANDO</button>
 
-<!-- INÍCIO -->
-<section id="inicio">
+ <div id="resposta">Pode falar comigo. Estou aqui!</div>
 
- <div class="grid">
-  <div class="card">
-   <p class="muted">GANHOS</p>
-   <div class="value gold" id="ganhos">R$ 0,00</div>
-  </div>
-  <div class="card">
-   <p class="muted">DESPESAS</p>
-   <div class="value" id="despesas">R$ 0,00</div>
-  </div>
- </div>
-
- <div class="card">
-  <p class="muted">SALDO LÍQUIDO</p>
-  <div class="value gold" id="saldo">R$ 0,00</div>
- </div>
-
- <div class="card">
-  <h3>🎯 Meta diária</h3>
-  <input id="meta" type="number" placeholder="Meta em reais">
-  <button class="full" onclick="salvarMeta()">SALVAR META</button>
-  <p id="progresso" class="gold"></p>
- </div>
-
- <div class="card">
-  <h3>📍 Minha rota</h3>
-  <input id="destino" placeholder="Digite seu destino">
-  <button class="full" onclick="navegar()">ABRIR NAVEGAÇÃO</button>
- </div>
-
- <div class="card">
-  <h3>🔧 Manutenção</h3>
-  <input id="manutencao" placeholder="Ex.: trocar pneu">
-  <input id="km" type="number" placeholder="Quilometragem (opcional)">
-  <button class="full" onclick="registrarManutencao()">REGISTRAR MANUTENÇÃO</button>
-  <div id="historicoManutencao"></div>
- </div>
+ <p class="small">Ativação: SALVE! • Alternativa: Gaaiz</p>
 
 </section>
 
-<!-- FINANCEIRO -->
-<section id="financeiro" hidden>
-
+<!-- RESUMO -->
+<section class="grid">
  <div class="card">
-  <h3>💰 Registrar movimentação</h3>
-
-  <select id="tipo">
-   <option value="ganho">Ganho</option>
-   <option value="despesa">Despesa</option>
-  </select>
-
-  <input id="valor" type="number" step="0.01" placeholder="Valor em reais">
-  <input id="descricao" placeholder="Descrição">
-
-  <button class="full" onclick="registrar()">REGISTRAR</button>
+  <p class="muted">GANHOS DE HOJE</p>
+  <div class="value gold" id="ganhos">R$ 0,00</div>
  </div>
-
  <div class="card">
-  <h3>📊 Histórico financeiro</h3>
-  <div id="historico"></div>
-  <button class="full secondary" onclick="exportarDados()">EXPORTAR DADOS</button>
+  <p class="muted">DESPESAS DE HOJE</p>
+  <div class="value red" id="despesas">R$ 0,00</div>
  </div>
-
 </section>
 
-<!-- VEÍCULOS -->
-<section id="veiculos" hidden>
-
- <div class="card">
-  <h3>🏍️ Modalidade de entrega</h3>
-
-  <select id="veiculo">
-   <option>Moto elétrica</option>
-   <option>Bicicleta elétrica</option>
-   <option>Bicicleta comum</option>
-   <option>Moto</option>
-   <option>Carro</option>
-   <option>Van</option>
-   <option>SUV</option>
-   <option>Frete / Outros</option>
-  </select>
-
-  <button class="full" onclick="salvarVeiculo()">SALVAR VEÍCULO</button>
-  <p id="veiculoAtual" class="gold"></p>
- </div>
-
+<section class="card">
+ <p class="muted">SALDO LÍQUIDO DE HOJE</p>
+ <div class="value gold" id="saldo">R$ 0,00</div>
+ <div class="progress"><div id="barra"></div></div>
+ <p class="small" id="metaResumo">Meta diária: R$ 200,00</p>
 </section>
 
-<!-- CONFIGURAÇÕES -->
-<section id="config" hidden>
+<!-- ATALHOS -->
+<div class="quick">
+ <button onclick="abrir('financeiro')"><span>💰</span>Finanças</button>
+ <button onclick="abrir('pay')"><span>💎</span>Meu Pay</button>
+ <button onclick="abrir('veiculo')"><span>🏍️</span>Veículo</button>
+ <button onclick="abrir('rota')"><span>📍</span>Rotas</button>
+ <button onclick="abrir('manutencao')"><span>🔧</span>Manutenção</button>
+ <button onclick="abrir('lembretes')"><span>⏰</span>Lembretes</button>
+ <button onclick="abrir('meta')"><span>🎯</span>Metas</button>
+ <button onclick="abrir('config')"><span>⚙️</span>Ajustes</button>
+</div>
 
- <div class="card">
-  <h3>💎 Personalizar SALVE</h3>
-
-  <label>Nome da assistente</label>
-  <input id="nome" placeholder="SALVE">
-
-  <label>Palavra de ativação</label>
-  <input id="ativacao" placeholder="Ô, Salve!">
-
-  <button class="full" onclick="salvarConfiguracoes()">SALVAR CONFIGURAÇÕES</button>
- </div>
-
- <div class="card">
-  <h3>⏰ Lembretes</h3>
-  <input id="lembrete" placeholder="O que devo lembrar?">
-  <input id="horario" type="datetime-local">
-  <button class="full" onclick="criarLembrete()">CRIAR LEMBRETE</button>
-  <div id="listaLembretes"></div>
- </div>
-
- <div class="card">
-  <h3>📦 Meus dados</h3>
-  <button class="full secondary" onclick="exportarDados()">BAIXAR BACKUP</button>
-  <p class="muted">Seus lançamentos ficam salvos localmente neste navegador. Faça backups regularmente.</p>
- </div>
-
-</section>
+<footer>
+MEU CORRE • SALVE IA • TUDO NO SEU COMANDO 💎
+</footer>
 
 </main>
 
-<footer>
-MEU CORRE • SALVE IA • SUA VIDA NO CONTROLE
-</footer>
+<!-- PAINEL FLUTUANTE: NÃO TROCA DE PÁGINA -->
+<div id="painel" onclick="fecharFora(event)">
+ <div class="modal">
+  <div class="modalHead">
+   <h3 id="tituloPainel" class="gold">Meu Corre</h3>
+   <button class="fechar" onclick="fechar()">✕</button>
+  </div>
+  <div id="conteudoPainel"></div>
+ </div>
+</div>
 
 <script>
+"use strict";
+
+/* DADOS */
+
 const PADRAO={
  lancamentos:[],
  meta:200,
  veiculo:"Moto elétrica",
  nome:"SALVE",
- ativacao:"Ô, Salve!",
- lembretes:[],
- manutencoes:[]
+ ativacao:"SALVE",
+ ativacao2:"Gaaiz",
+ pay:{saldo:0,historico:[]},
+ manutencoes:[],
+ lembretes:[]
 };
 
-let dados;
-try{
- dados={...PADRAO,...JSON.parse(localStorage.getItem("meucorre")||"{}")};
-}catch(e){
- dados={...PADRAO};
+function carregar(){
+ try{
+  const x=JSON.parse(localStorage.getItem("meucorre")||"{}");
+  return {
+   ...PADRAO,...x,
+   pay:{...PADRAO.pay,...(x.pay||{})}
+  };
+ }catch(e){
+  return JSON.parse(JSON.stringify(PADRAO));
+ }
 }
 
+let dados=carregar();
 let reconhecimento=null;
-let iniciado=false;
-let escutando=false;
+let ouvindo=false;
 let falando=false;
-let silencioso=false;
-let saudacaoFeita=false;
+let silencioso=true;
 let reinicio=null;
+let aguardando=null;
+
+const $=id=>document.getElementById(id);
+
+function dinheiro(v){
+ return Number(v||0).toLocaleString("pt-BR",{
+  style:"currency",currency:"BRL"
+ });
+}
+
+function hoje(){
+ return new Date().toLocaleDateString("en-CA");
+}
 
 function salvar(){
  try{
   localStorage.setItem("meucorre",JSON.stringify(dados));
+  atualizar();
  }catch(e){
-  status("Não consegui salvar os dados neste aparelho.");
+  responder("Não consegui salvar os dados no aparelho.");
  }
- atualizar();
-}
-
-function status(t){
- document.getElementById("status").textContent=t;
-}
-
-function dinheiro(v){
- return Number(v).toLocaleString("pt-BR",{
-  style:"currency",currency:"BRL"
- });
 }
 
 function totais(){
  let g=0,d=0;
  dados.lancamentos.forEach(x=>{
-  if(x.tipo==="ganho")g+=x.valor;
-  else d+=x.valor;
+  if((x.data||"").slice(0,10)!==hoje())return;
+  if(x.tipo==="ganho")g+=Number(x.valor);
+  else d+=Number(x.valor);
  });
  return {g,d,s:g-d};
 }
 
 function atualizar(){
- let t=totais();
+ const t=totais();
 
- document.getElementById("ganhos").textContent=dinheiro(t.g);
- document.getElementById("despesas").textContent=dinheiro(t.d);
- document.getElementById("saldo").textContent=dinheiro(t.s);
+ $("ganhos").textContent=dinheiro(t.g);
+ $("despesas").textContent=dinheiro(t.d);
+ $("saldo").textContent=dinheiro(t.s);
 
- document.getElementById("meta").value=dados.meta;
- document.getElementById("nome").value=dados.nome;
- document.getElementById("ativacao").value=dados.ativacao;
- document.getElementById("veiculoAtual").textContent=
-  "Veículo selecionado: "+dados.veiculo;
+ const percentual=dados.meta>0?
+ Math.min(100,t.g/dados.meta*100):0;
 
- let percentual=dados.meta>0?Math.round(t.g/dados.meta*100):0;
- document.getElementById("progresso").textContent=
-  percentual+"% da sua meta diária alcançada.";
+ $("barra").style.width=percentual+"%";
+ $("metaResumo").textContent=
+ "Meta diária: "+dinheiro(dados.meta)+
+ " • "+Math.round(percentual)+"% alcançado";
 
- let h=document.getElementById("historico");
- h.replaceChildren();
-
- dados.lancamentos.slice().reverse().forEach(x=>{
-  let div=document.createElement("div");
-  div.className="item";
-  div.textContent=(x.tipo==="ganho"?"🟢 ":"🔴 ")+
-   x.descricao+" — "+dinheiro(x.valor);
-  h.appendChild(div);
- });
-
- let lm=document.getElementById("listaLembretes");
- lm.replaceChildren();
-
- dados.lembretes.forEach((x,i)=>{
-  let div=document.createElement("div");
-  div.className="item";
-  div.textContent=x.texto+" — "+x.horario;
-
-  let btn=document.createElement("button");
-  btn.className="danger";
-  btn.textContent="Excluir";
-  btn.onclick=()=>excluirLembrete(i);
-
-  div.appendChild(btn);
-  lm.appendChild(div);
- });
-
- let hm=document.getElementById("historicoManutencao");
- hm.replaceChildren();
-
- dados.manutencoes.slice().reverse().forEach(x=>{
-  let div=document.createElement("div");
-  div.className="item";
-  div.textContent=x.texto+(x.km?" — "+x.km+" km":"");
-  hm.appendChild(div);
- });
+ $("nomeTitulo").textContent=dados.nome;
 }
 
-function mostrar(id){
- ["inicio","financeiro","veiculos","config"].forEach(x=>{
-  document.getElementById(x).hidden=x!==id;
- });
-}
+/* RESPOSTAS E VOZ */
 
-function falar(texto){
- status(texto);
+function responder(texto){
+ $("resposta").textContent=texto;
+ $("status").textContent=texto;
 
- if(silencioso||!("speechSynthesis" in window)){
-  reiniciarEscuta();
-  return;
- }
+ if(silencioso||!("speechSynthesis" in window))return;
 
  falando=true;
 
  if(reconhecimento){
-  try{reconhecimento.stop();}catch(e){}
+  try{reconhecimento.stop()}catch(e){}
  }
 
  speechSynthesis.cancel();
 
- let voz=new SpeechSynthesisUtterance(texto);
- voz.lang="pt-BR";
- voz.rate=1;
- voz.pitch=1.05;
+ const fala=new SpeechSynthesisUtterance(texto);
+ fala.lang="pt-BR";
+ fala.rate=1;
+ fala.pitch=1.05;
 
- voz.onend=()=>{
+ fala.onend=()=>{
   falando=false;
-  reiniciarEscuta();
+  reiniciar();
+ };
+ fala.onerror=()=>{
+  falando=false;
+  reiniciar();
  };
 
- voz.onerror=()=>{
-  falando=false;
-  reiniciarEscuta();
- };
-
- speechSynthesis.speak(voz);
+ speechSynthesis.speak(fala);
 }
 
 function cumprimentar(){
- if(saudacaoFeita)return;
- saudacaoFeita=true;
+ const h=new Date().getHours();
+ const hora=h>=5&&h<12?"Bom dia":
+ h>=12&&h<18?"Boa tarde":
+ h>=18?"Boa noite":"Boa madrugada";
 
- let h=new Date().getHours();
- let hora=h>=5&&h<12?"Bom dia":
-  h>=12&&h<18?"Boa tarde":
-  h>=18?"Boa noite":"Boa madrugada";
-
- falar(hora+"! Eu sou a "+dados.nome+
-  ". Bora cuidar do seu corre? Estou aqui para ajudar!");
+ $("saudacao").textContent=hora+
+ "! Sua parceira está pronta para o corre.";
 }
 
-function prepararEscuta(){
- const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+function prepararReconhecimento(){
+ const SR=window.SpeechRecognition||
+ window.webkitSpeechRecognition;
 
  if(!SR){
-  status("Seu navegador não oferece reconhecimento de voz compatível.");
-  document.getElementById("microfone").style.display="block";
-  return;
+  responder("Seu navegador não oferece reconhecimento de voz.");
+  return false;
  }
+
+ if(reconhecimento)return true;
 
  reconhecimento=new SR();
  reconhecimento.lang="pt-BR";
@@ -419,10 +364,9 @@ function prepararEscuta(){
  reconhecimento.interimResults=false;
 
  reconhecimento.onstart=()=>{
-  escutando=true;
-  status("Estou ouvindo você...");
-  document.getElementById("orb").classList.add("active");
-  document.getElementById("microfone").style.display="none";
+  ouvindo=true;
+  $("orb").classList.add("active");
+  $("status").textContent="Estou ouvindo você...";
  };
 
  reconhecimento.onresult=e=>{
@@ -434,47 +378,38 @@ function prepararEscuta(){
  };
 
  reconhecimento.onerror=e=>{
-  escutando=false;
-
-  if(e.error==="not-allowed"||e.error==="service-not-allowed"){
-   status("Permita o acesso ao microfone nas configurações do navegador.");
-   document.getElementById("microfone").style.display="block";
+  ouvindo=false;
+  if(e.error==="not-allowed"){
+   $("btnVoz").style.display="block";
+   responder("Permita o uso do microfone nas configurações.");
   }
  };
 
  reconhecimento.onend=()=>{
-  escutando=false;
-  document.getElementById("orb").classList.remove("active");
-  reiniciarEscuta();
+  ouvindo=false;
+  $("orb").classList.remove("active");
+  reiniciar();
  };
 
- iniciado=true;
- reiniciarEscuta();
- cumprimentar();
+ return true;
+}
+
+function ativarVoz(){
+ silencioso=false;
+ if(!prepararReconhecimento())return;
+ iniciarEscuta();
 }
 
 function iniciarEscuta(){
- if(!reconhecimento||!iniciado||silencioso||falando||escutando)return;
-
- try{
-  reconhecimento.start();
- }catch(e){
-  escutando=false;
- }
+ if(!reconhecimento||ouvindo||silencioso||falando)return;
+ try{reconhecimento.start()}catch(e){}
 }
 
-function reiniciarEscuta(){
+function reiniciar(){
  clearTimeout(reinicio);
- if(iniciado&&!silencioso&&!falando){
-  reinicio=setTimeout(iniciarEscuta,1000);
+ if(reconhecimento&&!silencioso&&!falando){
+  reinicio=setTimeout(iniciarEscuta,1200);
  }
-}
-
-function ativarMicrofone(){
- silencioso=false;
- iniciado=true;
- document.getElementById("microfone").style.display="none";
- iniciarEscuta();
 }
 
 function alternarSilencio(){
@@ -483,252 +418,645 @@ function alternarSilencio(){
  if(silencioso){
   clearTimeout(reinicio);
   if(reconhecimento){
-   try{reconhecimento.stop();}catch(e){}
+   try{reconhecimento.stop()}catch(e){}
   }
   if("speechSynthesis" in window)speechSynthesis.cancel();
   falando=false;
-  status("Modo silencioso ativado.");
+  responder("Modo silencioso ativado.");
  }else{
-  falar("Estou de volta! Pode falar comigo.");
+  if(!reconhecimento)prepararReconhecimento();
+  responder("Voltei! Pode falar comigo.");
+  iniciarEscuta();
  }
 }
 
-function registrar(){
- let v=Number(document.getElementById("valor").value);
- let desc=document.getElementById("descricao").value.trim();
- let tipo=document.getElementById("tipo").value;
+/* PAINEL ÚNICO */
 
- if(!Number.isFinite(v)||v<=0||!desc){
-  falar("Confira o valor e a descrição antes de registrar.");
+function abrir(tipo){
+ const titulos={
+ financeiro:"💰 Finanças",
+ pay:"💎 Meu Corre Pay",
+ veiculo:"🏍️ Meu veículo",
+ rota:"📍 Navegação",
+ manutencao:"🔧 Manutenção",
+ lembretes:"⏰ Lembretes",
+ meta:"🎯 Minha meta",
+ config:"⚙️ Configurações",
+ historico:"📊 Histórico",
+ backup:"📦 Meus dados"
+ };
+
+ $("tituloPainel").textContent=titulos[tipo]||"Meu Corre";
+ $("conteudoPainel").replaceChildren();
+
+ const funcoes={
+ financeiro:pFinanceiro,
+ pay:pPay,
+ veiculo:pVeiculo,
+ rota:pRota,
+ manutencao:pManutencao,
+ lembretes:pLembretes,
+ meta:pMeta,
+ config:pConfig,
+ historico:pHistorico,
+ backup:pBackup
+ };
+
+ if(funcoes[tipo])funcoes[tipo]();
+
+ $("painel").classList.add("aberto");
+}
+
+function fechar(){
+ $("painel").classList.remove("aberto");
+}
+
+function fecharFora(e){
+ if(e.target===$("painel"))fechar();
+}
+
+function campo(id,placeholder,type="text"){
+ const i=document.createElement("input");
+ i.id=id;
+ i.placeholder=placeholder;
+ i.type=type;
+ if(type==="number")i.step="0.01";
+ return i;
+}
+
+function botao(texto,acao,classe=""){
+ const b=document.createElement("button");
+ b.className="full "+classe;
+ b.textContent=texto;
+ b.onclick=acao;
+ return b;
+}
+
+function titulo(texto){
+ const h=document.createElement("h3");
+ h.textContent=texto;
+ $("conteudoPainel").appendChild(h);
+}
+
+function adicionar(elemento){
+ $("conteudoPainel").appendChild(elemento);
+}
+
+/* FINANÇAS */
+
+function pFinanceiro(){
+ titulo("Registrar movimentação");
+
+ const tipo=document.createElement("select");
+ tipo.id="fTipo";
+ tipo.innerHTML=
+ '<option value="ganho">Ganho</option>'+
+ '<option value="despesa">Despesa</option>';
+ adicionar(tipo);
+
+ adicionar(campo("fValor","Valor em reais","number"));
+ adicionar(campo("fDesc","Descrição"));
+
+ adicionar(botao("REGISTRAR",()=>{
+  registrarFinanceiro(
+   $("fTipo").value,
+   $("fValor").value,
+   $("fDesc").value
+  );
+  abrir("financeiro");
+ }));
+
+ titulo("Resumo de hoje");
+
+ const t=totais();
+ adicionarTexto(
+  "Ganhos: "+dinheiro(t.g)+
+  " | Despesas: "+dinheiro(t.d)+
+  " | Líquido: "+dinheiro(t.s)
+ );
+
+ adicionar(botao("VER HISTÓRICO",()=>abrir("historico"),"secondary"));
+}
+
+function registrarFinanceiro(tipo,valor,descricao){
+ const v=Number(valor);
+ if(!Number.isFinite(v)||v<=0||!descricao.trim()){
+  responder("Confira o valor e a descrição.");
   return;
  }
 
  dados.lancamentos.push({
-  tipo:tipo,valor:v,descricao:desc,
+  tipo,valor:v,
+  descricao:descricao.trim(),
   data:new Date().toISOString()
  });
 
  salvar();
- document.getElementById("valor").value="";
- document.getElementById("descricao").value="";
- falar("Movimentação registrada com sucesso!");
+ responder("Movimentação registrada!");
 }
 
-function salvarMeta(){
- let m=Number(document.getElementById("meta").value);
- if(!Number.isFinite(m)||m<=0)return falar("Informe uma meta válida.");
- dados.meta=m;
- salvar();
- falar("Sua meta foi atualizada!");
-}
+function pHistorico(){
+ titulo("Histórico financeiro");
 
-function salvarVeiculo(){
- dados.veiculo=document.getElementById("veiculo").value;
- salvar();
- falar("Veículo atualizado com sucesso!");
-}
+ const lista=$("conteudoPainel");
 
-function salvarConfiguracoes(){
- let nome=document.getElementById("nome").value.trim();
- let ativacao=document.getElementById("ativacao").value.trim();
+ dados.lancamentos.slice().reverse().forEach((x,i)=>{
+  const div=document.createElement("div");
+  div.className="item";
+  const txt=document.createElement("span");
+  txt.textContent=(x.tipo==="ganho"?"🟢 ":"🔴 ")+
+  x.descricao+" — "+dinheiro(x.valor);
 
- dados.nome=nome||"SALVE";
- dados.ativacao=ativacao||"Ô, Salve!";
+  const btn=document.createElement("button");
+  btn.className="danger";
+  btn.textContent="Excluir";
+  btn.onclick=()=>{
+   if(!confirm("Excluir este lançamento?"))return;
+   dados.lancamentos.splice(dados.lancamentos.length-1-i,1);
+   salvar();
+   abrir("historico");
+  };
 
- salvar();
- falar("Minhas configurações foram atualizadas!");
-}
-
-function navegar(){
- let d=document.getElementById("destino").value.trim();
-
- if(!d)return falar("Informe o destino primeiro.");
-
- let url="https://www.google.com/maps/dir/?api=1&destination="+
-  encodeURIComponent(d);
-
- window.open(url,"_blank");
-}
-
-function registrarManutencao(){
- let texto=document.getElementById("manutencao").value.trim();
- let km=document.getElementById("km").value;
-
- if(!texto)return falar("Informe o serviço de manutenção.");
-
- dados.manutencoes.push({
-  texto:texto,
-  km:km,
-  data:new Date().toISOString()
+  div.append(txt,btn);
+  lista.appendChild(div);
  });
-
- salvar();
- document.getElementById("manutencao").value="";
- document.getElementById("km").value="";
- falar("Manutenção registrada!");
+ if(!dados.lancamentos.length)adicionarTexto("Nenhum lançamento ainda.");
 }
 
-function criarLembrete(){
- let texto=document.getElementById("lembrete").value.trim();
- let horario=document.getElementById("horario").value;
+/* PAY DEMONSTRATIVO */
 
- if(!texto||!horario)return falar("Preencha o lembrete e o horário.");
- if(new Date(horario)<=new Date())return falar("Escolha um horário futuro.");
+function pPay(){
+ titulo("Carteira demonstrativa");
+ adicionarTexto("Saldo de teste: "+dinheiro(dados.pay.saldo));
 
- dados.lembretes.push({
-  texto,horario,avisado:false
+ adicionar(campo("payValor","Valor em reais","number"));
+ adicionar(botao("SIMULAR RECEBIMENTO",()=>{
+  const v=Number($("payValor").value);
+  if(!Number.isFinite(v)||v<=0){
+   responder("Informe um valor válido.");
+   return;
+  }
+  dados.pay.saldo+=v;
+  dados.pay.historico.push({
+   tipo:"Recebimento",
+   descricao:"Crédito demonstrativo",
+   valor:v,
+   data:new Date().toISOString()
+  });
+  salvar();
+  responder("Crédito demonstrativo adicionado.");
+  abrir("pay");
+ }));
+
+ titulo("Pix demonstrativo");
+ adicionar(campo("payChave","Chave Pix fictícia"));
+ adicionar(campo("payEnviar","Valor a simular","number"));
+
+ adicionar(botao("SIMULAR ENVIO",()=>{
+  const chave=$("payChave").value.trim();
+  const v=Number($("payEnviar").value);
+
+  if(!chave||!Number.isFinite(v)||v<=0){
+   responder("Confira a chave e o valor.");
+   return;
+  }
+  if(v>dados.pay.saldo){
+   responder("Saldo demonstrativo insuficiente.");
+   return;
+  }
+  if(!confirm("Simular envio de "+dinheiro(v)+
+  "? Nenhum Pix real será realizado."))return;
+
+  dados.pay.saldo-=v;
+  dados.pay.historico.push({
+   tipo:"Envio simulado",
+   descricao:"Chave: "+chave,
+   valor:v,
+   data:new Date().toISOString()
+  });
+  salvar();
+  responder("Simulação concluída. Nenhum dinheiro foi transferido.");
+  abrir("pay");
+ }));
+
+ adicionarTexto("⚠️ Esta carteira não movimenta dinheiro real. O Pix é apenas simulado.");
+
+ titulo("Extrato");
+ dados.pay.historico.slice().reverse().forEach(x=>{
+  adicionarTexto(x.tipo+" — "+x.descricao+" — "+dinheiro(x.valor));
  });
-
- salvar();
- document.getElementById("lembrete").value="";
- falar("Lembrete salvo!");
 }
 
-function excluirLembrete(i){
- dados.lembretes.splice(i,1);
- salvar();
- falar("Lembrete excluído.");
+/* VEÍCULOS */
+
+function pVeiculo(){
+ titulo("Modalidade de entrega");
+
+ const s=document.createElement("select");
+ s.id="novoVeiculo";
+ [
+ "Moto elétrica","Bicicleta elétrica",
+ "Bicicleta comum","Moto","Carro","Van","SUV","Frete / Outros"
+ ].forEach(x=>{
+  const o=document.createElement("option");
+  o.textContent=x;
+  s.appendChild(o);
+ });
+ s.value=dados.veiculo;
+ adicionar(s);
+
+ adicionar(botao("SALVAR VEÍCULO",()=>{
+  dados.veiculo=s.value;
+  salvar();
+  responder("Veículo atualizado para "+dados.veiculo);
+  fechar();
+ }));
+ adicionarTexto("Atual: "+dados.veiculo);
 }
+
+/* ROTAS */
+
+function pRota(){
+ titulo("Para onde vamos?");
+ adicionar(campo("destino","Digite endereço ou destino"));
+
+ adicionar(botao("ABRIR GOOGLE MAPS",()=>{
+  const d=$("destino").value.trim();
+  if(!d)return responder("Informe o destino.");
+
+  window.open(
+   "https://www.google.com/maps/dir/?api=1&destination="+
+   encodeURIComponent(d),
+   "_blank"
+  );
+  responder("Abrindo sua rota.");
+ }));
+}
+
+/* MANUTENÇÃO */
+
+function pManutencao(){
+ titulo("Registrar manutenção");
+ adicionar(campo("mTexto","Ex.: trocar pneu"));
+ adicionar(campo("mKm","Quilometragem","number"));
+
+ adicionar(botao("SALVAR MANUTENÇÃO",()=>{
+  const texto=$("mTexto").value.trim();
+  if(!texto)return responder("Informe o serviço.");
+
+  dados.manutencoes.push({
+   texto,
+   km:$("mKm").value,
+   data:new Date().toISOString()
+  });
+  salvar();
+  responder("Manutenção registrada!");
+  abrir("manutencao");
+ }));
+
+ titulo("Histórico");
+
+ dados.manutencoes.slice().reverse().forEach(x=>{
+  adicionarTexto(x.texto+(x.km?" — "+x.km+" km":""));
+ });
+}
+
+/* LEMBRETES */
+
+function pLembretes(){
+ titulo("Novo lembrete");
+ adicionar(campo("lTexto","O que devo lembrar?"));
+ adicionar(campo("lData","Data e horário","datetime-local"));
+
+ adicionar(botao("CRIAR LEMBRETE",()=>{
+  const texto=$("lTexto").value.trim();
+  const horario=$("lData").value;
+
+  if(!texto||!horario||new Date(horario)<=new Date()){
+   responder("Informe um lembrete e um horário futuro.");
+   return;
+  }
+
+  dados.lembretes.push({
+   texto,horario,avisado:false
+  });
+  salvar();
+  responder("Lembrete criado!");
+  abrir("lembretes");
+ }));
+
+ titulo("Seus lembretes");
+
+ dados.lembretes.forEach((x,i)=>{
+  const div=document.createElement("div");
+  div.className="item";
+  const txt=document.createElement("span");
+  txt.textContent=x.texto+" — "+x.horario;
+
+  const btn=document.createElement("button");
+  btn.className="danger";
+  btn.textContent="Excluir";
+  btn.onclick=()=>{
+   if(!confirm("Excluir lembrete?"))return;
+   dados.lembretes.splice(i,1);
+   salvar();
+   abrir("lembretes");
+  };
+  div.append(txt,btn);
+  adicionar(div);
+ });
+}
+
+/* METAS */
+
+function pMeta(){
+ titulo("Minha meta diária");
+ adicionar(campo("novaMeta","Valor da meta","number"));
+ $("novaMeta").value=dados.meta;
+
+ adicionar(botao("SALVAR META",()=>{
+  const v=Number($("novaMeta").value);
+  if(!Number.isFinite(v)||v<=0)return responder("Meta inválida.");
+  dados.meta=v;
+  salvar();
+  responder("Meta atualizada!");
+  fechar();
+ }));
+}
+
+/* CONFIGURAÇÕES */
+
+function pConfig(){
+ titulo("Personalizar SALVE");
+
+ adicionar(campo("novoNome","Nome da assistente"));
+ $("novoNome").value=dados.nome;
+
+ adicionar(campo("novaAtivacao","Ativação principal"));
+ $("novaAtivacao").value=dados.ativacao;
+
+ adicionar(campo("novaAtivacao2","Ativação alternativa"));
+ $("novaAtivacao2").value=dados.ativacao2;
+
+ adicionar(botao("SALVAR CONFIGURAÇÕES",()=>{
+  dados.nome=$("novoNome").value.trim()||"SALVE";
+  dados.ativacao=$("novaAtivacao").value.trim()||"SALVE";
+  dados.ativacao2=$("novaAtivacao2").value.trim()||"Gaaiz";
+  salvar();
+  responder("Configurações salvas.");
+  fechar();
+ }));
+
+ titulo("Privacidade e dados");
+ adicionar(botao("EXPORTAR BACKUP",exportarDados,"secondary"));
+ adicionar(botao("RESTAURAR BACKUP",()=>{
+  $("arquivoImport").click();
+ },"secondary"));
+
+ const file=document.createElement("input");
+ file.type="file";
+ file.accept=".json,application/json";
+ file.id="arquivoImport";
+ file.hidden=true;
+ file.onchange=importarDados;
+ adicionar(file);
+}
+
+/* BACKUP */
+
+function pBackup(){
+ titulo("Meus dados");
+ adicionar(botao("EXPORTAR BACKUP",exportarDados));
+}
+
+function exportarDados(){
+ const blob=new Blob(
+  [JSON.stringify(dados,null,2)],
+  {type:"application/json"}
+ );
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+ a.href=url;
+ a.download="meu-corre-backup.json";
+ a.click();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+ responder("Backup preparado.");
+}
+
+function importarDados(e){
+ const file=e.target.files[0];
+ if(!file)return;
+
+ const r=new FileReader();
+ r.onload=()=>{
+  try{
+   const novo=JSON.parse(r.result);
+   if(!novo||!Array.isArray(novo.lancamentos))throw Error();
+
+   if(!confirm("Substituir os dados atuais pelo backup?"))return;
+
+   dados={
+    ...PADRAO,...novo,
+    pay:{...PADRAO.pay,...(novo.pay||{})}
+   };
+   salvar();
+   responder("Backup restaurado.");
+   fechar();
+  }catch(err){
+   responder("Arquivo de backup inválido.");
+  }
+ };
+ r.readAsText(file);
+}
+
+/* TEXTO */
+
+function adicionarTexto(texto){
+ const p=document.createElement("p");
+ p.className="small";
+ p.textContent=texto;
+ adicionar(p);
+}
+
+/* COMANDOS */
+
+function normalizar(s){
+ return s.toLowerCase()
+ .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+ .trim();
+}
+
+function processar(texto){
+ let c=normalizar(texto);
+ if(!c)return;
+
+ const principal=normalizar(dados.ativacao);
+ const alternativa=normalizar(dados.ativacao2);
+
+ if(c.includes(principal))c=c.replace(principal,"").trim();
+ if(alternativa&&c.includes(alternativa))c=c.replace(alternativa,"").trim();
+
+ if(!c){
+  responder("Oi! Estou aqui. O que vamos fazer?");
+  return;
+ }
+
+ if(c.includes("fique em silencio")||c.includes("fique quieta")){
+  if(!silencioso)alternarSilencio();
+  return;
+ }
+
+ if(c.includes("quanto ganhei")||c==="ganhos"){
+  return responder("Seus ganhos de hoje são "+dinheiro(totais().g));
+ }
+
+ if(c.includes("quanto gastei")||c==="despesas"){
+  return responder("Suas despesas de hoje são "+dinheiro(totais().d));
+ }
+
+ if(c.includes("saldo")&&c.includes("pay")){
+  return responder("Seu saldo demonstrativo no Pay é "+dinheiro(dados.pay.saldo));
+ }
+
+ if(c.includes("saldo")){
+  return responder("Seu saldo líquido de hoje é "+dinheiro(totais().s));
+ }
+
+ if(c.includes("registra")||c.includes("anota")||
+ c.includes("ganhei")||c.includes("gastei")||
+ c.includes("recebi")){
+  const n=c.match(/\d+(?:[,.]\d{1,2})?/);
+  if(!n){
+   aguardando="valor";
+   return responder("Qual é o valor?");
+  }
+
+  const v=Number(n[0].replace(",","."));
+  const tipo=c.includes("gastei")?"despesa":"ganho";
+
+  if(c.includes("despesa"))return abrir("financeiro");
+
+  registrarFinanceiro(
+   tipo,String(v),
+   tipo==="ganho"?"Ganho por voz":"Despesa por voz"
+  );
+  return;
+ }
+
+ if(c.includes("meu corre pay")||c==="pay"||
+ c.includes("carteira")||c.includes("pix")){
+  abrir("pay");
+  return responder("Abri seu Meu Corre Pay demonstrativo.");
+ }
+
+ if(c.includes("financa")||c.includes("financeiro")){
+  abrir("financeiro");
+  return responder("Abri seu controle financeiro.");
+ }
+
+ if(c.includes("historico")){
+  abrir("historico");
+  return responder("Seu histórico está aberto.");
+ }
+
+ if(c.includes("veiculo")||c.includes("minha moto")){
+  abrir("veiculo");
+  return responder("Abri as configurações do veículo.");
+ }
+
+ if(c.includes("rota")||c.includes("navegar")||
+ c.includes("destino")||c.includes("maps")){
+  abrir("rota");
+  return responder("Vamos escolher seu destino.");
+ }
+
+ if(c.includes("manutencao")||c.includes("troquei o pneu")){
+  abrir("manutencao");
+  return responder("Abri a manutenção do veículo.");
+ }
+
+ if(c.includes("lembrete")||c.includes("me lembra")){
+  abrir("lembretes");
+  return responder("Abri seus lembretes.");
+ }
+
+ if(c.includes("meta")){
+  abrir("meta");
+  return responder("Sua meta diária é "+dinheiro(dados.meta));
+ }
+
+ if(c.includes("configuracao")||c.includes("personalizar")){
+  abrir("config");
+  return responder("Abri suas configurações.");
+ }
+
+ if(c.includes("backup")){
+  abrir("backup");
+  return responder("Abri seus dados e backup.");
+ }
+
+ if(c.includes("inicio")||c.includes("painel")){
+  fechar();
+  return responder("Estamos na tela principal.");
+ }
+
+ responder("Ainda não conheço esse comando. Pode me explicar o que deseja?");
+}
+
+function enviarComando(){
+ const texto=$("comando").value;
+ $("comando").value="";
+
+ if(aguardando==="valor"){
+  aguardando=null;
+  const n=texto.match(/\d+(?:[,.]\d{1,2})?/);
+  if(!n)return responder("Não consegui identificar o valor.");
+
+  registrarFinanceiro(
+   "ganho",
+   n[0].replace(",","."),
+   "Ganho por voz"
+  );
+  return;
+ }
+
+ processar(texto);
+}
+
+$("comando").addEventListener("keydown",e=>{
+ if(e.key==="Enter")enviarComando();
+});
+
+/* ALERTAS */
 
 function verificarLembretes(){
- let agora=Date.now();
+ const agora=Date.now();
  let mudou=false;
 
  dados.lembretes.forEach(x=>{
   if(!x.avisado&&new Date(x.horario).getTime()<=agora){
    x.avisado=true;
    mudou=true;
-   falar("Atenção! Lembrete: "+x.texto);
+   responder("Atenção! Lembrete: "+x.texto);
+
+   if("Notification" in window&&Notification.permission==="granted"){
+    new Notification("Meu Corre - SALVE",{body:x.texto});
+   }
   }
  });
-
  if(mudou)salvar();
 }
 
-function processar(texto){
- let c=(texto||"").toLowerCase().trim();
- if(!c)return;
-
- let ativacao=dados.ativacao.toLowerCase()
-  .replace(/[!?.]/g,"").trim();
-
- if(c.includes(ativacao)){
-  c=c.replace(ativacao,"").trim();
-  if(!c)return falar("Oi! Estou aqui. O que vamos fazer?");
- }
-
- if(c.includes("silêncio")||c.includes("fique quieta")){
-  alternarSilencio();
-  return;
- }
-
- if(c.includes("saldo")){
-  return falar("Seu saldo atual é "+dinheiro(totais().s));
- }
-
- if(c.includes("quanto ganhei")||c==="ganhos"){
-  return falar("Seus ganhos são "+dinheiro(totais().g));
- }
-
- if(c.includes("quanto gastei")||c==="despesas"){
-  return falar("Suas despesas são "+dinheiro(totais().d));
- }
-
- if(c.includes("ganhei")||c.includes("recebi")||c.includes("gastei")){
-  let n=c.match(/\d+(?:[,.]\d{1,2})?/);
-  if(!n)return falar("Não identifiquei o valor.");
-
-  let v=Number(n[0].replace(",","."));
-  if(v<=0)return falar("O valor precisa ser positivo.");
-
-  let tipo=c.includes("gastei")?"despesa":"ganho";
-
-  dados.lancamentos.push({
-   tipo,valor:v,
-   descricao:tipo==="ganho"?"Ganho por voz":"Despesa por voz",
-   data:new Date().toISOString()
-  });
-
-  salvar();
-  return falar("Registrei "+dinheiro(v)+" como "+tipo+". Confira no painel.");
- }
-
- if(c.includes("meta")){
-  return falar("Sua meta diária é "+dinheiro(dados.meta));
- }
-
- if(c.includes("veículo")||c.includes("veiculo")){
-  return falar("Seu veículo atual é "+dados.veiculo);
- }
-
- if(c.includes("navegar")||c.includes("rota")||c.includes("mapa")){
-  mostrar("inicio");
-  return falar("Área de navegação aberta. Informe seu destino.");
- }
-
- if(c.includes("lembrete")){
-  mostrar("config");
-  return falar("Área de lembretes aberta.");
- }
-
- if(c.includes("manutenção")||c.includes("manutencao")){
-  mostrar("inicio");
-  return falar("Área de manutenção aberta.");
- }
-
- if(c.includes("histórico")||c.includes("historico")){
-  mostrar("financeiro");
-  return falar("Seu histórico está aberto.");
- }
-
- if(c.includes("início")||c.includes("inicio")||c.includes("painel")){
-  mostrar("inicio");
-  return falar("Painel inicial aberto.");
- }
-
- falar("Ainda não conheço esse comando. Vamos aprender juntos?");
-}
-
-function enviarDigitado(){
- let c=document.getElementById("comando").value;
- document.getElementById("comando").value="";
- processar(c);
-}
-
-function exportarDados(){
- let arquivo=new Blob(
-  [JSON.stringify(dados,null,2)],
-  {type:"application/json"}
- );
-
- let url=URL.createObjectURL(arquivo);
- let a=document.createElement("a");
- a.href=url;
- a.download="meu-corre-backup.json";
- a.click();
- URL.revokeObjectURL(url);
- falar("Backup preparado para salvar.");
-}
-
-document.getElementById("comando")
- .addEventListener("keydown",e=>{
-  if(e.key==="Enter")enviarDigitado();
- });
+/* INÍCIO */
 
 atualizar();
-
-window.addEventListener("load",()=>{
- setTimeout(prepararEscuta,500);
-});
-
+cumprimentar();
 setInterval(verificarLembretes,15000);
 
 document.addEventListener("visibilitychange",()=>{
- if(!document.hidden){
-  reiniciarEscuta();
- }
+ if(!document.hidden)reiniciar();
 });
-</script>
 
+</script>
 </body>
 </html>
