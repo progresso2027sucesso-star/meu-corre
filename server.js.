@@ -11,13 +11,13 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 10000;
 
-// Configuração do Render
+// Render
 app.set("trust proxy", 1);
 
-// Origens autorizadas
+// Configuração das origens autorizadas
 const allowedOrigins = (process.env.FRONTEND_ORIGIN || "")
   .split(",")
-  .map(origin => origin.trim())
+  .map(origin => origin.trim().replace(/\/$/, ""))
   .filter(Boolean);
 
 // Cliente OpenAI
@@ -34,17 +34,28 @@ app.use(helmet());
 
 app.use(cors({
   origin(origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
+    // Permite aplicativos sem origem, como chamadas de servidor
+    if (!origin) {
+      return callback(null, true);
+    }
+
+    const normalizedOrigin = origin.replace(/\/$/, "");
+
+    if (allowedOrigins.includes(normalizedOrigin)) {
       return callback(null, true);
     }
 
     return callback(new Error("Origem não autorizada"));
-  }
+  },
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type"],
+  optionsSuccessStatus: 204
 }));
 
-app.use(express.json({ limit: "20kb" }));
+// Recebimento de JSON
+app.use(express.json({ limit: "100kb" }));
 
-// Limite de requisições
+// Limite de mensagens
 const limiter = rateLimit({
   windowMs: 60 * 1000,
   limit: 20,
@@ -79,6 +90,7 @@ PERSONALIDADE:
 ATIVAÇÃO:
 - A ativação principal do aplicativo é SALVE!
 - Respeite a personalização da palavra de ativação feita pelo usuário.
+- Não altere a configuração de ativação do aplicativo por conta própria.
 
 MISSÃO:
 Ajudar entregadores com:
@@ -106,6 +118,7 @@ COMUNICAÇÃO:
 - Explique assuntos técnicos de maneira simples.
 - Ajude o usuário passo a passo.
 - Se não souber algo, seja transparente.
+- Adapte o tamanho da resposta à necessidade do usuário.
 
 Você representa a inteligência central do Meu Corre.
 Seu objetivo é tornar o dia a dia do entregador mais simples.
@@ -117,13 +130,13 @@ app.get("/", (req, res) => {
     app: "Meu Corre",
     assistant: "SALVE",
     status: "online",
-    version: "1.0.1"
+    version: "1.0.2"
   });
 });
 
 // Verificação de funcionamento
 app.get("/health", (req, res) => {
-  res.json({
+  res.status(200).json({
     status: "ok",
     assistant: "SALVE",
     openai: client ? "configured" : "not_configured"
@@ -154,6 +167,7 @@ app.post("/api/chat", async (req, res) => {
     const validMessages = messages.every(message =>
       message &&
       typeof message === "object" &&
+      !Array.isArray(message) &&
       ["user", "assistant"].includes(message.role) &&
       typeof message.content === "string" &&
       message.content.trim().length > 0 &&
@@ -166,18 +180,20 @@ app.post("/api/chat", async (req, res) => {
       });
     }
 
+    const input = messages.map(message => ({
+      role: message.role,
+      content: message.content.trim()
+    }));
+
     const response = await client.responses.create({
       model: process.env.OPENAI_MODEL || "gpt-6.2-astra",
       instructions,
-      input: messages.map(message => ({
-        role: message.role,
-        content: message.content.trim()
-      })),
+      input,
       max_output_tokens: 1200,
       store: false
     });
 
-    const reply = response.output_text;
+    const reply = response.output_text?.trim();
 
     if (!reply) {
       return res.status(502).json({
@@ -185,7 +201,7 @@ app.post("/api/chat", async (req, res) => {
       });
     }
 
-    return res.json({
+    return res.status(200).json({
       assistant: "SALVE",
       reply
     });
@@ -193,6 +209,7 @@ app.post("/api/chat", async (req, res) => {
   } catch (error) {
     console.error("Erro na SALVE:", {
       status: error.status || 500,
+      code: error.code || "unknown",
       message: error.message
     });
 
@@ -208,29 +225,45 @@ app.post("/api/chat", async (req, res) => {
       });
     }
 
+    if (error.status === 404) {
+      return res.status(502).json({
+        error: "Modelo de inteligência artificial não encontrado. Verifique OPENAI_MODEL."
+      });
+    }
+
+    if (error.name === "APIConnectionTimeoutError") {
+      return res.status(504).json({
+        error: "A SALVE demorou para responder. Tente novamente."
+      });
+    }
+
     return res.status(500).json({
       error: "Não consegui conversar agora. Tente novamente."
     });
   }
 });
 
-// Tratamento de erros
+// Tratamento geral de erros
 app.use((error, req, res, next) => {
+  if (res.headersSent) {
+    return next(error);
+  }
+
   if (error.message === "Origem não autorizada") {
     return res.status(403).json({
       error: "Origem não autorizada."
     });
   }
 
-  if (error.status === 413) {
+  if (error.type === "entity.too.large") {
     return res.status(413).json({
       error: "Mensagem muito grande."
     });
   }
 
-  if (error.status === 400) {
+  if (error.type === "entity.parse.failed") {
     return res.status(400).json({
-      error: "Requisição inválida."
+      error: "JSON inválido."
     });
   }
 
@@ -243,5 +276,10 @@ app.use((error, req, res, next) => {
 
 // Inicialização
 app.listen(PORT, "0.0.0.0", () => {
-  console.log(`Meu Corre - SALVE online na porta ${PORT}`);
+  console.log("--------------------------------");
+  console.log("MEU CORRE - SALVE");
+  console.log("Servidor online na porta " + PORT);
+  console.log("OpenAI:", client ? "Configurada" : "Não configurada");
+  console.log("Origens autorizadas:", allowedOrigins.length);
+  console.log("--------------------------------");
 });
